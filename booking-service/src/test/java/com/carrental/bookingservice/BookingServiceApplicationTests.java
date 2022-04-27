@@ -59,7 +59,7 @@ class BookingServiceApplicationTests {
 		req.setStartDate(today);
 		req.setEndDate(tomorrow);
 		List<Inventory> inventories = inventoryService.queryAvailableCars(req);
-		assert inventories.size() == 2;
+		assert inventories.size() == 4;
 		for (Inventory inventory : inventories) {
 			assert inventory.getNumInStock() == 2;
 		}
@@ -68,7 +68,7 @@ class BookingServiceApplicationTests {
 		inventoryService.reduceInventory(1, BMW_650, today, tomorrow);
 
 		inventories = inventoryService.queryAvailableCars(req);
-		assert inventories.size() == 2;
+		assert inventories.size() == 4;
 		for (Inventory inventory : inventories) {
 			assert inventory.getNumInStock() == 1;
 		}
@@ -77,7 +77,7 @@ class BookingServiceApplicationTests {
 		inventoryService.increaseInventory(1, BMW_650, today, tomorrow);
 
 		inventories = inventoryService.queryAvailableCars(req);
-		assert inventories.size() == 2;
+		assert inventories.size() == 4;
 		for (Inventory inventory : inventories) {
 			assert inventory.getNumInStock() == 2;
 		}
