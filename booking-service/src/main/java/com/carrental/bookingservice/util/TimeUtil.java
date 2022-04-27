@@ -19,4 +19,11 @@ public class TimeUtil {
         c.add(Calendar.DATE, 1);
         return c.getTime();
     }
+
+    public static Date getTomorrow(Date lastDate) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(lastDate);
+        c.add(Calendar.DATE, 1);
+        return c.getTime();
+    }
 }

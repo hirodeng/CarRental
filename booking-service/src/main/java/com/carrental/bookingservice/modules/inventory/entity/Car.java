@@ -25,10 +25,4 @@ public class Car {
     @NotNull
     private Integer price;
 
-    @NotNull
-    private Date infoUpdatedAt;
-
-    @NotNull
-    private Date inventoryUpdatedAt;
-
 }

@@ -3,6 +3,7 @@ package com.carrental.bookingservice;
 import com.carrental.bookingservice.modules.inventory.controller.req.QueryAvailableCarsReq;
 import com.carrental.bookingservice.modules.inventory.entity.Inventory;
 import com.carrental.bookingservice.modules.inventory.service.InventoryService;
+import com.carrental.bookingservice.modules.inventory.task.UpdateInventoryTask;
 import com.carrental.bookingservice.modules.order.controller.req.CreateOrderReq;
 import com.carrental.bookingservice.modules.order.entity.Order;
 import com.carrental.bookingservice.modules.order.service.OrderService;
@@ -30,6 +31,9 @@ class BookingServiceApplicationTests {
 
 	@Autowired
 	private OrderService orderService;
+
+	@Autowired
+	private UpdateInventoryTask updateInventoryTask;
 
 	@Test
 	void contextLoads() {
@@ -102,7 +106,7 @@ class BookingServiceApplicationTests {
 		req.setStartDate(TimeUtil.getToday());
 		req.setEndDate(TimeUtil.getTomorrow());
 		List<Inventory> inventories = inventoryService.queryAvailableCars(req);
-		assert inventories.size() == 2;
+		assert inventories.size() == 4;
 		for (Inventory inventory : inventories) {
 			// inventories should be reduced to 1
 			assert inventory.getNumInStock() == 1;
@@ -119,7 +123,7 @@ class BookingServiceApplicationTests {
 		assert orders.get(1).getStatus().equals(Order.Status.PAID.value);
 
 		inventories = inventoryService.queryAvailableCars(req);
-		assert inventories.size() == 2;
+		assert inventories.size() == 4;
 		for (Inventory inventory : inventories) {
 			if (inventory.getCarModel().equals(BMW_650)) {
 				assert inventory.getNumInStock() == 2;
@@ -135,9 +139,43 @@ class BookingServiceApplicationTests {
 		assert orders.get(1).getStatus().equals(Order.Status.COMPLETE.value);
 
 		inventories = inventoryService.queryAvailableCars(req);
-		assert inventories.size() == 2;
+		assert inventories.size() == 4;
 		for (Inventory inventory : inventories) {
 			assert inventory.getNumInStock() == 2;
+		}
+	}
+
+	@Test
+	void testInventoryTask() throws Exception {
+		User user = userService.getAllUsers().get(0);
+		CreateOrderReq createOrderReq = new CreateOrderReq();
+		createOrderReq.setStartDate(TimeUtil.getToday());
+		createOrderReq.setEndDate(TimeUtil.getTomorrow());
+		createOrderReq.setCarModel(BMW_650);
+		// place one order of bmw 650
+		orderService.createOrder(user, createOrderReq);
+
+		createOrderReq.setCarModel(TOYOTA_CAMRY);
+		// place another order of toyota camry
+		orderService.createOrder(user, createOrderReq);
+
+		QueryAvailableCarsReq req = new QueryAvailableCarsReq();
+		req.setStartDate(TimeUtil.getToday());
+		req.setEndDate(TimeUtil.getTomorrow());
+		List<Inventory> inventories = inventoryService.queryAvailableCars(req);
+		assert inventories.size() == 4;
+		for (Inventory inventory : inventories) {
+			// inventories should be reduced to 1
+			assert inventory.getNumInStock() == 1;
+		}
+
+		updateInventoryTask.run();
+
+		inventories = inventoryService.queryAvailableCars(req);
+		assert inventories.size() == 4;
+		for (Inventory inventory : inventories) {
+			// inventories should be reduced to 1
+			assert inventory.getNumInStock() == 1;
 		}
 	}
 }

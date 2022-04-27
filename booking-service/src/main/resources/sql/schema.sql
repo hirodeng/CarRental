@@ -15,8 +15,6 @@ id int unsigned not null auto_increment comment 'PK',
 car_model varchar(100) not null comment 'car model',
 price int unsigned not null comment 'renting price per day in RMB cents',
 number int unsigned not null comment 'number of cars',
-info_updated_at TIMESTAMP not null comment 'update time of car info' default now(),
-inventory_updated_at TIMESTAMP not null comment 'update time of inventory' default now(),
 primary key (id),
 unique index idx_car_model (car_model)
 );
