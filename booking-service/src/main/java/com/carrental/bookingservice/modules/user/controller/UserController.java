@@ -19,12 +19,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
-    public BaseResponse<List<User>> getAllUsers() {
-        return new BaseResponse<>(userService.
-                getAllUsers());
-    }
-
     @PostMapping("/signup")
     public BaseResponse<String> signUp(@RequestBody SignUpReq req) {
         log.info("sign up req={}", req.toString());
