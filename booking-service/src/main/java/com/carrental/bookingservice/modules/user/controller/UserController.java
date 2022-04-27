@@ -38,8 +38,4 @@ public class UserController {
         return new BaseResponse<>(req.getName());
     }
 
-    @PostMapping("/signout")
-    public BaseResponse signOut() {
-        return BaseResponse.success();
-    }
 }
