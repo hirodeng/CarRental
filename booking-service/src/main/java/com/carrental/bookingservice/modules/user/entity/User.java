@@ -6,10 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Arrays;
@@ -18,10 +15,11 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
+@Table(name="t_user")
 @Entity
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -31,13 +29,8 @@ public class User implements UserDetails {
     @NotNull
     private String password;
 
-    @NotNull
-    private Integer status; // 1 - normal, 0 - disabled
-
-    @NotNull
-    private Integer role; // 1 - admin, 2 - customer
-
-    private Date createdAt;
+//    @NotNull
+//    private Integer role; // 1 - admin, 2 - customer
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

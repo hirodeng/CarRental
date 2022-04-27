@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -19,7 +20,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/")
-    public BaseResponse<ArrayList<User>> getAllUsers() {
+    public BaseResponse<List<User>> getAllUsers() {
         return new BaseResponse<>(userService.
                 getAllUsers());
     }

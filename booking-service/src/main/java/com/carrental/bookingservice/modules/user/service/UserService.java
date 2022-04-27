@@ -11,6 +11,7 @@ import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -36,7 +37,7 @@ public class UserService {
         }
     }
 
-    public ArrayList<User> getAllUsers() {
+    public List<User> getAllUsers() {
         ArrayList<User> users = new ArrayList<>();
         for (User user : userRepository.findAll()) {
             users.add(user);
