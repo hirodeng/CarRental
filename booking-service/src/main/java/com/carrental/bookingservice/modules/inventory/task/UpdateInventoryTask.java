@@ -4,7 +4,6 @@ import com.carrental.bookingservice.modules.inventory.entity.Car;
 import com.carrental.bookingservice.modules.inventory.entity.Inventory;
 import com.carrental.bookingservice.modules.inventory.repository.CarRepository;
 import com.carrental.bookingservice.modules.inventory.repository.InventoryRepository;
-import com.carrental.bookingservice.modules.order.entity.Order;
 import com.carrental.bookingservice.modules.order.repository.OrderRepository;
 import com.carrental.bookingservice.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +11,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 @Component
 public class UpdateInventoryTask {
-    public static final int DAYS_AHEAD = 3;
+    public static final int DAYS_AHEAD = 95;
 
     @Autowired
     private CarRepository carRepository;

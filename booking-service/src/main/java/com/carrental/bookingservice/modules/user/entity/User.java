@@ -29,6 +29,11 @@ public class User implements UserDetails {
     @NotNull
     private String password;
 
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+
 //    @NotNull
 //    private Integer role; // 1 - admin, 2 - customer
 

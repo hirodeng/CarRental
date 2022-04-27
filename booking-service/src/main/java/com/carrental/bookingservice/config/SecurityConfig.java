@@ -28,15 +28,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
-//        http
-//            .formLogin()
-//            .loginPage("/login");
+        http
+            .formLogin()
+            .loginPage("/login")
+            .defaultSuccessUrl("/swagger-ui.html");
+
+        http
+            .logout()
+            .logoutSuccessUrl("/login");
 
         http
             .authorizeRequests()
-            .anyRequest().permitAll();
-//            .antMatchers("/login", "/login.html", "/users/signup", "/users/signin").permitAll()
-//            .anyRequest().authenticated();
+//            .anyRequest().permitAll();
+            .antMatchers("/login", "/register", "/users/signup", "/users/signin").permitAll()
+            .anyRequest().authenticated();
+
+        http.httpBasic();
     }
 
     @Bean

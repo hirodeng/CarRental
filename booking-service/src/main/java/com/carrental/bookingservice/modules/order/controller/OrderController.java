@@ -2,6 +2,7 @@ package com.carrental.bookingservice.modules.order.controller;
 
 import com.carrental.bookingservice.common.BaseResponse;
 import com.carrental.bookingservice.modules.order.controller.req.CreateOrderReq;
+import com.carrental.bookingservice.modules.order.entity.Order;
 import com.carrental.bookingservice.modules.order.service.OrderService;
 import com.carrental.bookingservice.modules.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
@@ -18,30 +19,26 @@ public class OrderController {
 
     @GetMapping("/")
     public BaseResponse queryOrders(@AuthenticationPrincipal User user) {
-        return new BaseResponse(orderService.queryOrders(user));
+        return new BaseResponse<>(orderService.queryOrders(user));
     }
 
     @PostMapping("/")
-    public BaseResponse createOrder(@AuthenticationPrincipal User user, @RequestBody CreateOrderReq req) throws Exception {
-        orderService.createOrder(user, req);
-        return BaseResponse.success();
+    public BaseResponse<Order> createOrder(@AuthenticationPrincipal User user, @RequestBody CreateOrderReq req) throws Exception {
+        return new BaseResponse<>(orderService.createOrder(user, req));
     }
 
     @PostMapping("/{orderId}/pay")
-    public BaseResponse payOrder(@AuthenticationPrincipal User user, @PathVariable Long orderId) throws Exception {
-        orderService.payOrder(user, orderId);
-        return BaseResponse.success();
+    public BaseResponse<Order> payOrder(@AuthenticationPrincipal User user, @PathVariable Long orderId) throws Exception {
+        return new BaseResponse<>(orderService.payOrder(user, orderId));
     }
 
     @PostMapping("/{orderId}/cancel")
-    public BaseResponse cancelOrder(@AuthenticationPrincipal User user, @PathVariable Long orderId) throws Exception {
-        orderService.cancelOrder(user, orderId);
-        return BaseResponse.success();
+    public BaseResponse<Order>  cancelOrder(@AuthenticationPrincipal User user, @PathVariable Long orderId) throws Exception {
+        return new BaseResponse<>(orderService.cancelOrder(user, orderId));
     }
 
     @PostMapping("/{orderId}/complete")
-    public BaseResponse completeOrder(@AuthenticationPrincipal User user, @PathVariable Long orderId) throws Exception {
-        orderService.completeOrder(user, orderId);
-        return BaseResponse.success();
+    public BaseResponse<Order>  completeOrder(@AuthenticationPrincipal User user, @PathVariable Long orderId) throws Exception {
+        return new BaseResponse<>(orderService.completeOrder(user, orderId));
     }
 }

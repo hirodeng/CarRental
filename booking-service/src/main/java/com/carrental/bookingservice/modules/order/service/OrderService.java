@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +33,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void createOrder(User user, CreateOrderReq req) throws Exception {
+    public Order createOrder(User user, CreateOrderReq req) throws Exception {
         Integer amount = 0;
         QueryAvailableCarsReq queryAvailableCarsReq = new QueryAvailableCarsReq();
         queryAvailableCarsReq.setStartDate(req.getStartDate());
@@ -53,10 +52,10 @@ public class OrderService {
         order.setEndDate(req.getEndDate());
         order.setStatus(Order.Status.NEW.value);
         order.setAmount(amount);
-        orderRepository.save(order);
+        return orderRepository.save(order);
     }
 
-    public void payOrder(User user, Long orderId) throws Exception {
+    public Order payOrder(User user, Long orderId) throws Exception {
         Optional<Order> orderOptional = orderRepository.findById(orderId);
         if (! orderOptional.isPresent()) {
             throw new Exception("Order not found");
@@ -72,11 +71,11 @@ public class OrderService {
         }
 
         order.payOrder();
-        orderRepository.save(order);
+        return orderRepository.save(order);
     }
 
     @Transactional
-    public void cancelOrder(User user, Long orderId) throws Exception {
+    public Order cancelOrder(User user, Long orderId) throws Exception {
         Optional<Order> orderOptional = orderRepository.findById(orderId);
         if (! orderOptional.isPresent()) {
             throw new Exception("Order not found");
@@ -95,10 +94,12 @@ public class OrderService {
         orderRepository.save(order);
 
         inventoryService.increaseInventory(1, order.getCarModel(), order.getStartDate(), order.getEndDate());
+
+        return order;
     }
 
     @Transactional
-    public void completeOrder(User user, Long orderId) throws Exception {
+    public Order completeOrder(User user, Long orderId) throws Exception {
         Optional<Order> orderOptional = orderRepository.findById(orderId);
         if (! orderOptional.isPresent()) {
             throw new Exception("Order not found");
@@ -117,5 +118,7 @@ public class OrderService {
         orderRepository.save(order);
 
         inventoryService.increaseInventory(1, order.getCarModel(), order.getStartDate(), order.getEndDate());
+
+        return order;
     }
 }
